@@ -17,7 +17,7 @@
         <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
           <img 
             class="h-56 w-full object-cover lg:absolute lg:h-full" 
-            :src="thumbnail" 
+            :src="thumbnail ? thumbnail : placeholderThumbnail" 
             alt="Public video thumbnail"
           />
         </div>
@@ -25,7 +25,7 @@
       <div class="relative py-16 px-4 sm:py-24 sm:px-6 lg:px-8 lg:max-w-7xl lg:mx-auto lg:py-32 lg:grid lg:grid-cols-2">
         <div class="lg:pr-8">
           <div class="max-w-md mx-auto sm:max-w-lg lg:mx-0">
-            <form action="#" method="POST" class="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+            <form @reset="thumbnail = null" @submit.prevent="submit" class="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
               <div class="sm:col-span-2">
                 <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
                 <div class="mt-1">
@@ -43,8 +43,11 @@
                 </div>
               </div>
               <div class="text-right sm:col-span-2">
-                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-grape-600 hover:bg-grape-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-grape-500">
+                <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                   Submit
+                </button>
+                <button type="reset" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  Reset
                 </button>
               </div>
             </form>
@@ -74,7 +77,14 @@ export default {
         type:null,
         identifier:null
       },
-      thumbnail: 'https://via.placeholder.com/850x500?text=Public+video+thumbnail'
+      placeholderThumbnail:'https://via.placeholder.com/850x500?text=Public+video+thumbnail',
+      thumbnail: null
+    }
+  },
+  methods:{
+    submit(){
+      this.thumbnail = this.$cloudinary.image
+                .url( this.form.identifier, {type: this.form.type} );
     }
   }
 }
