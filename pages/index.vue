@@ -17,7 +17,7 @@
         <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
           <img 
             class="h-56 w-full object-cover lg:absolute lg:h-full" 
-            src="https://via.placeholder.com/850x500?text=Public+video+thumbnail" 
+            :src="thumbnail" 
             alt="Public video thumbnail"
           />
         </div>
@@ -29,13 +29,17 @@
               <div class="sm:col-span-2">
                 <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
                 <div class="mt-1">
-                  <input id="type" name="type" type="text" class="block w-full shadow-sm sm:text-sm focus:ring-grape-500 focus:border-grape-500 border-gray-300 rounded-md">
+                  <select required v-model="form.type" id="type" name="type" type="text" class="block w-full shadow-sm sm:text-sm focus:ring-grape-500 focus:border-grape-500 border-gray-300 rounded-md">
+                    <option v-for="type in types" :value="type.value" :key="type.value">
+                      {{type.text}}
+                    </option>
+                  </select>
                 </div>
               </div>
               <div class="sm:col-span-2">
                 <label for="identifier" class="block text-sm font-medium text-gray-700">Identifier (URL or unique identifier)</label>
                 <div class="mt-1">
-                  <input type="text" name="identifier" id="identifier" class="block w-full shadow-sm sm:text-sm focus:ring-grape-500 focus:border-grape-500 border-gray-300 rounded-md">
+                  <input v-model="form.identifier" required type="text" name="identifier" id="identifier" class="block w-full shadow-sm sm:text-sm focus:ring-grape-500 focus:border-grape-500 border-gray-300 rounded-md">
                 </div>
               </div>
               <div class="text-right sm:col-span-2">
@@ -55,6 +59,23 @@
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  data(){
+    return {
+      types:[
+        {text:"YouTube", value:"youtube"}, 
+        {text:"Hulu", value:"hulu"}, 
+        {text:"Vimeo", value:"vimeo"}, 
+        {text:"Animoto", value:"animoto"}, 
+        {text:"World Star HipHop", value:"worldstarhiphop"}, 
+        {text:"Daily Motion", value:"dailymotion"}
+      ],
+      form:{
+        type:null,
+        identifier:null
+      },
+      thumbnail: 'https://via.placeholder.com/850x500?text=Public+video+thumbnail'
+    }
+  }
 }
 </script>
